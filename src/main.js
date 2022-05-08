@@ -5,5 +5,3 @@ import App from './App.vue'
 defineIonPhaser(window)
 
 createApp(App).mount('#app')
-
-ergaoingrpa
