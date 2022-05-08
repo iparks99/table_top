@@ -1,16 +1,18 @@
-const http = require('http')
+const express = require('express')
 const port = 3000
 
-const server = http.createServer(function (req, res) {
-  res.write('Hello world')
+var app = express()
 
-  res.end()
+app.get('/', function (req, res) {
+  res.send('Hello world')
 })
 
-server.listen(port, function (err) {
+var server = app.listen(port, function (err) {
+  var host = '127.0.0.1'
+
   if (err) {
     console.error('Something went wrong: ', error)
   } else {
-    console.log('Server is listening on port ' + port)
+    console.log('Server is listening at http://%s:%d', host, port)
   }
 })
