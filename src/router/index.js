@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: null
+    component: NotFound
   },
   {
     path: "/login",
@@ -26,6 +26,10 @@ const routes = [
   },
 ]
 
+const protectedRoutes = ['Home']
+
+var isAuthenticated = false
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -35,5 +39,11 @@ router.resolve({
   name: 'not-found',
   params: { pathMatch: ['not', 'found'] },
 }).href
+
+router.beforeEach(async (to) => {
+  if (protectedRoutes.includes(to.name) && !isAuthenticated) {
+    return '/login'
+  }
+})
 
 export default router

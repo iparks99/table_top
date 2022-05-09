@@ -3,16 +3,16 @@
     <div id="login">
       <h1 style="text-align: center;">Login</h1>
 
-      <form>
+      <form @submit="login">
         <label for="user"><b>Username</b></label>
-        <input type="text" placeholder="Enter username" name="user" required>
+        <input type="text" placeholder="Enter username" v-model="username" name="user" required>
         
         <label for="pass"><b>Password</b></label>
-        <input type="password" placeholder="Enter password" name="pass" required>
+        <input type="password" placeholder="Enter password" v-model="password" name="pass" required>
         <p class="small-font"><a href="" onclick="event.preventDefault();" @click="forgotPassword();">Forgot your password?</a></p>
 
         <button id="login-btn" type="submit">Login</button> <br/>
-        <label><input type="checkbox" checked="checked" name="remember"> Remember me</label> <br />
+        <label><input type="checkbox" v-model="remember" name="remember"> Remember me</label> <br />
 
         <p>New here? Click <a href="register">here</a> to register.</p>
       </form>
@@ -26,11 +26,19 @@ export default {
     document.title = 'Login'
   },
   data() {
-    return {}
+    return {
+      username: "",
+      password: "",
+      remember: true,
+    }
   },
   methods: {
     forgotPassword: function() {
       alert("Damn that's tough buddy. Better contact the server admins.")
+    },
+    login: function(e) {
+      e.preventDefault()
+      console.log(`Username: ${this.username}, password: ${this.password}. Remember? ${this.remember}`)
     }
   }
 }
@@ -63,6 +71,11 @@ export default {
   background-color: red;
   color: white;
   border: none;
+  cursor: pointer;
+}
+
+#login-btn:hover {
+  opacity: 0.5;
 }
 
 .small-font {

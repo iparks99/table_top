@@ -5,10 +5,12 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'App',
-  components: {
+  created: function() {
+    axios.defaults.baseURL = 'http://localhost:3000'
   },
   data() {
     return {

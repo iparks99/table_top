@@ -3,30 +3,55 @@
     <div id="register">
       <h2>Register a new account</h2>
 
-      <form>
+      <form @submit="register">
         <label for="user"><b>Choose your username</b></label>
-        <input type="text" placeholder="Enter username" name="user" required>
+        <input type="text" placeholder="Enter username" v-model="username" name="user" required>
         
         <label for="pass1"><b>Enter your password</b></label>
-        <input type="password" placeholder="Enter password" name="pass1" required>
+        <input type="password" placeholder="Enter password" v-model="password1" name="pass1" required>
 
         <label for="pass2"><b>Enter your password again</b></label>
-        <input type="password" placeholder="Enter password" name="pass2" required>
+        <input type="password" placeholder="Enter password" v-model="password2" name="pass2" required>
 
         <button id="register-btn" type="submit">Register</button> <br/>
+
+        <p id="error-text"></p>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   created: function() {
     document.title = 'Register'
   },
   data() {
-    return {}
+    return {
+      username: "",
+      password1: "",
+      password2: "",
+    }
+  },
+  methods: {
+    register: function(e) {
+      e.preventDefault()
+      if (this.password1 !== this.password2) {
+        document.getElementById('error-text').textContent = 'Passwords do not match!'
+        return
+      }
+
+      axios.post('/register', {
+        username: this.username,
+        password: this.password1,
+      }).then(function(response) {
+        console.log(response)
+      }).catch(function(error) {
+        console.log(error)
+      })
+    }
   }
 }
 </script>
@@ -58,6 +83,17 @@ export default {
   background-color: red;
   color: white;
   border: none;
+  cursor: pointer;
+}
+
+#register-btn:hover {
+  opacity: 0.5;
+}
+
+#error-text {
+  font-size: 11px;
+  color: red;
+  text-align: center;
 }
 
 input[type=text], input[type=password] {
