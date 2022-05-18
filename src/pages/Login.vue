@@ -15,6 +15,8 @@
         <label><input type="checkbox" v-model="remember" name="remember"> Remember me</label> <br />
 
         <p>New here? Click <a href="register">here</a> to register.</p>
+
+        <p id="error-text"></p>
       </form>
     </div>
   </div>
@@ -41,7 +43,6 @@ export default {
     },
     login: async function(e) {
       e.preventDefault()
-      console.log(`Username: ${this.username}, password: ${this.password}. Remember? ${this.remember}`)
 
       const password_digest = await sha256hashPassword(this.password)
 
@@ -49,13 +50,14 @@ export default {
         username: this.username,
         password: password_digest
       }).then(async (response) => {
-        console.log(response)
         if (response.data && response.data.success) {
           await this.$store.dispatch('login')
           this.$router.push('/')
         }
       }).catch(function(error) {
-        console.log(error)
+        if (error.response && error.response.data && error.response.data.msg) {
+          document.getElementById('error-text').textContent = error.response.data.msg
+        }
       })
     }
   }
@@ -94,6 +96,12 @@ export default {
 
 #login-btn:hover {
   opacity: 0.5;
+}
+
+#error-text {
+  font-size: 11px;
+  color: red;
+  text-align: center;
 }
 
 .small-font {

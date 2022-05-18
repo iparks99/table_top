@@ -8,15 +8,17 @@ router.post('/', function (req, res) {
       || !req.body.username
       || req.body.password == null
       || !req.body.password) {
-        return res.status(400).json({ 'success': false, 'msg': 'invalid request' })
+        return res.status(400).json({ 'success': false, 'msg': 'Invalid request' })
       }
 
-  Player.find({ 'username': req.body.username }, function (err, existingPlayer) {
+  Player.find({ 'username': req.body.username }, function (err, existingPlayers) {
     if (err) {
-      return res.status(500).json({ 'success': false, 'msg': 'server error' })
+      return res.status(500).json({ 'success': false, 'msg': 'Server error' })
     }
+    let existingPlayer = existingPlayers[0]
+    console.log(existingPlayer)
     if (existingPlayer && existingPlayer.username === req.body.username) {
-      return res.status(400).json({ 'success': false, 'msg': 'username taken' })
+      return res.status(400).json({ 'success': false, 'msg': 'Username already in use' })
     }
 
     const player = new Player({
@@ -27,7 +29,7 @@ router.post('/', function (req, res) {
     player.save(err => {
       if (err) {
         console.error(err)
-        return res.status(500).json({ 'success': false, 'msg': 'failed to create user' })
+        return res.status(500).json({ 'success': false, 'msg': 'Failed to create user' })
       } else {
         return res.status(200).json({ 'success': true })
       }

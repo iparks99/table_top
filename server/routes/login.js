@@ -8,21 +8,21 @@ router.post('/', function (req, res) {
     || !req.body.username
     || req.body.password == null
     || !req.body.password) {
-      return res.status(400).json({ 'success': false, 'msg': 'invalid request' })
+      return res.status(400).json({ 'success': false, 'msg': 'Invalid request' })
     }
 
   Player.findOne({ 'username': req.body.username }, function (err, existingPlayer) {
     if (err) {
-      return res.status(500).json({ 'success': false, 'msg': 'server error' })
+      return res.status(500).json({ 'success': false, 'msg': 'Server error' })
     }
     if (!existingPlayer) {
-      return res.status(400).json({ 'success': false, 'msg': 'invalid username' })
+      return res.status(400).json({ 'success': false, 'msg': 'Invalid username/password' })
     }
 
     if (req.body.password === existingPlayer.password) {
       return res.status(200).json({ 'success': true })
     } else {
-      return res.status(400).json({ 'success': false, 'msg': 'invalid password' })
+      return res.status(400).json({ 'success': false, 'msg': 'Invalid username/password' })
     }
   })
 })

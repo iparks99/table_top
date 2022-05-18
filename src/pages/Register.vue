@@ -39,6 +39,9 @@ export default {
   methods: {
     register: async function(e) {
       e.preventDefault()
+
+      document.getElementById('error-text').textContent = ''
+
       if (this.password1 !== this.password2) {
         document.getElementById('error-text').textContent = 'Passwords do not match!'
         return
@@ -51,12 +54,14 @@ export default {
         username: this.username,
         password: password_digest,
       }).then((response) => {
-        console.log(response)
         if (response.data && response.data.success) {
           this.$router.push('/login')
         }
       }).catch(function(error) {
-        console.log(error)
+        if (error.response && error.response.data && error.response.data.msg) {
+          document.getElementById('error-text').textContent = error.response.data.msg
+          return
+        }
       })
     }
   }

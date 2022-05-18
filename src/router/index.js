@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router"
+import Home from "@/pages/Home.vue"
 import Login from "@/pages/Login.vue"
 import Register from "@/pages/Register.vue"
 import NotFound from "@/pages/404.vue"
@@ -8,7 +9,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: NotFound
+    component: Home,
   },
   {
     path: "/login",
@@ -18,7 +19,7 @@ const routes = [
   {
     path: "/register",
     name: "Register",
-    component: Register
+    component: Register,
   },
   { // Any other pages result in 404 page.
     path: "/:pathMatch(.*)*",
@@ -41,7 +42,7 @@ router.resolve({
 
 router.beforeEach(async (to) => {
   let isAuthenticated = store.getters.isAuthenticated
-  console.log(isAuthenticated)
+  console.log(`Is user authenticated? ${isAuthenticated}`)
 
   if (protectedRoutes.includes(to.name) && !isAuthenticated) {
     return '/login'
