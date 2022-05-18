@@ -48,8 +48,12 @@ export default {
       axios.post('/login', {
         username: this.username,
         password: password_digest
-      }).then(function(response) {
+      }).then(async (response) => {
         console.log(response)
+        if (response.data && response.data.success) {
+          await this.$store.dispatch('login')
+          this.$router.push('/')
+        }
       }).catch(function(error) {
         console.log(error)
       })

@@ -11,23 +11,27 @@ router.post('/', function (req, res) {
         return res.status(400).json({ 'success': false, 'msg': 'invalid request' })
       }
 
-  let existingPlayer = Player.find({ 'username': req.body.username })
-  if (existingPlayer) {
-    return res.status(400).json({ 'success': false, 'msg': 'username taken'})
-  }
-
-  const player = new Player({
-    username: req.body.username,
-    password: req.body.password
-  })
-
-  player.save(err => {
+  Player.find({ 'username': req.body.username }, function (err, existingPlayer) {
     if (err) {
-      console.error(err)
-      return res.status(500).json({ 'success': false, 'msg': 'failed to create user' })
-    } else {
-      return res.status(200).json({ 'success': true })
+      return res.status(500).json({ 'success': false, 'msg': 'server error' })
     }
+    if (existingPlayer && existingPlayer.username === req.body.username) {
+      return res.status(400).json({ 'success': false, 'msg': 'username taken' })
+    }
+
+    const player = new Player({
+      username: req.body.username,
+      password: req.body.password
+    })
+  
+    player.save(err => {
+      if (err) {
+        console.error(err)
+        return res.status(500).json({ 'success': false, 'msg': 'failed to create user' })
+      } else {
+        return res.status(200).json({ 'success': true })
+      }
+    })
   })
 })
 

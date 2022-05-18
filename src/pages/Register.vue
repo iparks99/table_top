@@ -50,8 +50,11 @@ export default {
       axios.post('/register', {
         username: this.username,
         password: password_digest,
-      }).then(function(response) {
+      }).then((response) => {
         console.log(response)
+        if (response.data && response.data.success) {
+          this.$router.push('/login')
+        }
       }).catch(function(error) {
         console.log(error)
       })

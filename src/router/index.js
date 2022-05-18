@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router"
 import Login from "@/pages/Login.vue"
 import Register from "@/pages/Register.vue"
 import NotFound from "@/pages/404.vue"
+import store from '@/store/index'
 
 const routes = [
   {
@@ -28,8 +29,6 @@ const routes = [
 
 const protectedRoutes = ['Home']
 
-var isAuthenticated = false
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -41,6 +40,9 @@ router.resolve({
 }).href
 
 router.beforeEach(async (to) => {
+  let isAuthenticated = store.getters.isAuthenticated
+  console.log(isAuthenticated)
+
   if (protectedRoutes.includes(to.name) && !isAuthenticated) {
     return '/login'
   }
