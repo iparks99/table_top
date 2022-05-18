@@ -23,6 +23,7 @@
 
 <script>
 import axios from 'axios'
+import { sha256hashPassword } from '@/auth/authGuard'
 
 export default {
   created: function() {
@@ -36,16 +37,19 @@ export default {
     }
   },
   methods: {
-    register: function(e) {
+    register: async function(e) {
       e.preventDefault()
       if (this.password1 !== this.password2) {
         document.getElementById('error-text').textContent = 'Passwords do not match!'
         return
       }
 
+      // Hash password so we're not sending it as plaintext!
+      const password_digest = await sha256hashPassword(this.password1)
+
       axios.post('/register', {
         username: this.username,
-        password: this.password1,
+        password: password_digest,
       }).then(function(response) {
         console.log(response)
       }).catch(function(error) {

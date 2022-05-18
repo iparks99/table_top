@@ -21,6 +21,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { sha256hashPassword } from '@/auth/authGuard'
+
 export default {
   created: function() {
     document.title = 'Login'
@@ -36,9 +39,20 @@ export default {
     forgotPassword: function() {
       alert("Damn that's tough buddy. Better contact the server admins.")
     },
-    login: function(e) {
+    login: async function(e) {
       e.preventDefault()
       console.log(`Username: ${this.username}, password: ${this.password}. Remember? ${this.remember}`)
+
+      const password_digest = await sha256hashPassword(this.password)
+
+      axios.post('/login', {
+        username: this.username,
+        password: password_digest
+      }).then(function(response) {
+        console.log(response)
+      }).catch(function(error) {
+        console.log(error)
+      })
     }
   }
 }
