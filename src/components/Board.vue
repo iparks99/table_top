@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div id="phaser-container">
     <ion-phaser
+      id="game-board"
       v-bind:game.prop='game'
       v-bind:initialize.prop='initialize'
     />
@@ -16,8 +17,12 @@ export default {
       initialize: true,
       game: {
         width: "100%",
-        height: "100%",
+        height: "3000",
         type: Phaser.AUTO,
+        // scale: {
+        //   mode: Phaser.Scale.Fit,
+        //   autoCenter: Phaser.Scale.CENTER_BOTH,
+        // },
         scene: {
           init() {
             this.cameras.main.setBackgroundColor("#24252A")
@@ -34,6 +39,12 @@ export default {
           update() {
             this.helloWorld.angle += 1
           }
+        // },
+        // callbacks: {
+        //   postBoot: function (game) {
+        //     game.canvas.style.width = '100%';
+        //     game.canvas.style.height = '100%';
+        //   }
         }
       }
     }
@@ -45,3 +56,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#phaser-container, #game-board {
+  height: 100vh;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+</style>
