@@ -8,25 +8,42 @@ Basic setup:
 * MongoDB
 * NodeJS
 
-## Project setup
+## Dockerized Setup
+After any changes, you need to rebuild the docker containers.
+### Prerequisites
+* [Docker](https://docs.docker.com/get-docker/)
+* .env file
+
+### Build Docker containers
+In the top level directory:
+```
+docker-compose build
+```
+
+### Start Docker containers
+```
+docker-compose up -d
+```
+
+## Local Setup
+A local setup might be ideal for testing and development, as you can hot reload.
+### Prerequisites
+* [MongoDB](https://www.mongodb.com/docs/manual/installation/) installed and running
+* [NPM](https://docs.npmjs.com/cli/v7/configuring-npm/install) (preferably using [NVM](https://github.com/nvm-sh/nvm))
+* .env file
+
+### Install Packages
+In the top level directory:
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run API Server
+```
+npm run api
+```
+
+### Run GUI Server
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
